@@ -32,4 +32,4 @@
  '(js-indent-level 8)
  '(package-selected-packages
    (quote
-    (typescript smartparens paredit neotree haskell-mode fill-column-indicator clojure-mode auto-complete))))
+    (php-mode typescript smartparens paredit neotree haskell-mode fill-column-indicator clojure-mode auto-complete))))
