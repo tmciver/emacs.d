@@ -159,6 +159,26 @@ Autocomplete
 			      (setq indent-tabs-mode nil)))
 #+END_SRC
 
+** NeoTree
+#+BEGIN_SRC emacs-lisp
+(global-set-key [f8] 'neotree-toggle)
+(setq neo-window-fixed-size nil)
+#+END_SRC
+
+** Flymd
+#+BEGIN_SRC emacs-lisp
+;; workaround for some problem launching chrome on MacOSX:
+;; https://github.com/mola-T/flymd/blob/master/browser.md#user-content-chrome-macos
+(defun my-flymd-browser-function (url)
+  (let ((process-environment (browse-url-process-environment)))
+    (apply 'start-process
+           (concat "firefox " url)
+           nil
+           "/usr/bin/open"
+           (list "-a" "firefox" url))))
+(setq flymd-browser-open-function 'my-flymd-browser-function)
+#+END_SRC
+
 * Miscellaneous
 ;; refheap
 #+BEGIN_SRC emacs-lisp

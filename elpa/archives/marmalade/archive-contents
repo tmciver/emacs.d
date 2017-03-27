@@ -1878,7 +1878,7 @@
 	     [(0 8 8)
 	      nil "Managing multiple terminal buffers in Emacs." single])
  (multi-project .
-		[(0 0 21)
+		[(0 0 22)
 		 nil "Easily work with multiple projects." single])
  (multi-eshell .
 	       [(0 0 1)
@@ -2498,7 +2498,7 @@
 	      [(1 6 2)
 	       nil "Major mode for Inform 6 interactive fiction code" single])
  (inf-ruby .
-	   [(2 3 2)
+	   [(2 5 0)
 	    nil "Run a Ruby process in a buffer" single])
  (inf-groovy .
 	     [(2 0)
