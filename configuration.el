@@ -36,10 +36,13 @@
 
 (load-theme 'tango-dark t)
 
+(require 'yasnippet)
+(yas-reload-all)
 (add-hook 'prog-mode-hook (lambda ()
                             (linum-mode)
                             (subword-mode)
-                            (global-flycheck-mode)))
+                            (global-flycheck-mode)
+                            (yas-minor-mode)))
 
 (add-hook 'text-mode-hook 'turn-on-visual-line-mode)
 
