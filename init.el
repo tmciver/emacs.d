@@ -34,5 +34,5 @@
  '(markdown-command "pandoc")
  '(package-selected-packages
    (quote
-    (yasnippet-snippets yasnippet helm-ag projectile markdown-mode flycheck php-mode typescript smartparens paredit neotree haskell-mode fill-column-indicator clojure-mode auto-complete)))
+    (scala-mode yasnippet-snippets yasnippet helm-ag projectile markdown-mode flycheck php-mode typescript smartparens paredit neotree haskell-mode fill-column-indicator clojure-mode auto-complete)))
  '(tool-bar-mode nil))
