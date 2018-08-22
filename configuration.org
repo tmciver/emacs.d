@@ -1,41 +1,75 @@
+#+TITLE: Emacs Configuration
 
-(require 'package)
-(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
-(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
-(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
-(package-initialize)
+* package.el initialization
 
+#+BEGIN_SRC emacs-lisp
+  (require 'package)
+  (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
+  (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
+  (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
+  (package-initialize)
+#+END_SRC
+
+* Global Settings
+#+BEGIN_SRC emacs-lisp
 (global-auto-revert-mode 1)
 (smartparens-global-mode 1)
+#+END_SRC
 
+Smooth scrolling.
+#+BEGIN_SRC emacs-lisp
 (setq scroll-step 1
       scroll-conservatively 10000)
+#+END_SRC
 
+Mouse scrolling
+#+BEGIN_SRC emacs-lisp
 (setq mouse-wheel-scroll-amount '(1 ((shift) . 1) ((control) . nil)))
 (setq mouse-wheel-progressive-speed nil)
+#+END_SRC
 
+Autocomplete
+#+BEGIN_SRC emacs-lisp
 (require 'auto-complete)
 (require 'auto-complete-config)
 (global-auto-complete-mode t)
 (ac-config-default)
+#+END_SRC
 
+#+BEGIN_SRC emacs-lisp
 (setq-default column-number-mode t)
+#+END_SRC
 
+;; fill column stuff
+#+BEGIN_SRC emacs-lisp
 (require 'fill-column-indicator)
 (setq-default auto-fill-mode t)
 (setq-default fill-column 80)
+#+END_SRC
 
+;; custom
+#+BEGIN_SRC emacs-lisp
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(js-indent-level 8))
+#+END_SRC
 
+;; org S5
+#+BEGIN_SRC emacs-lisp
 ;; (require 'org-export-as-s5)
+#+END_SRC
 
+* Theming
+#+BEGIN_SRC emacs-lisp
 (load-theme 'tango-dark t)
+#+END_SRC
 
+* Language Settings
+** All Programming Languages
+#+BEGIN_SRC emacs-lisp
 (require 'yasnippet)
 (yas-reload-all)
 (add-hook 'prog-mode-hook (lambda ()
@@ -43,33 +77,52 @@
                             (subword-mode)
                             (global-flycheck-mode)
                             (yas-minor-mode)))
+#+END_SRC
 
+** Clojure
+#+BEGIN_SRC emacs-lisp
 (add-hook 'text-mode-hook 'turn-on-visual-line-mode)
 
 (require 'clojure-mode)
 (add-hook 'clojure-mode-hook
-          '(lambda ()
-             (paredit-mode t)
-             (show-paren-mode t)
-             (fci-mode 1)
-             (setq fci-rule-width 1)
-             (setq fci-rule-color "darkblue")))
+	  '(lambda ()
+	     (paredit-mode t)
+	     (show-paren-mode t)
+	     (fci-mode 1)
+	     (setq fci-rule-width 1)
+	     (setq fci-rule-color "darkblue")))
+#+END_SRC
 
+** Elisp
+#+BEGIN_SRC emacs-lisp
 (add-hook 'emacs-lisp-mode-hook
-          (lambda ()
-            (paredit-mode)))
+	  (lambda ()
+	    (paredit-mode)))
+#+END_SRC
 
+** NRepl
+#+BEGIN_SRC emacs-lisp
 (add-hook 'nrepl-mode-hook
-          (lambda ()
-            (paredit-mode)))
+	  (lambda ()
+	    (paredit-mode)))
+#+END_SRC
 
+** Binary
+#+BEGIN_SRC emacs-lisp
 ;; hexl mode for binary files
 (add-to-list 'auto-mode-alist '("\\.bin$" . hexl-mode))
+#+END_SRC
 
+** Octave
+#+BEGIN_SRC emacs-lisp
 (add-to-list 'auto-mode-alist '("\\.m$" . octave-mode))
+#+END_SRC
 
+** PHP
+#+BEGIN_SRC emacs-lisp
 (add-hook 'php-mode-hook '(lambda ()
-                            (setq c-basic-offset 2)))
+                            (setq c-basic-offset 2)
+                            (c-set-offset 'case-label '+)))
   ;;   (require 'web-mode)
   ;;   (require 'yasnippet)
   ;;   (yas-global-mode 1)
@@ -93,9 +146,15 @@
   ;;                               ac-source-dictionary
   ;;                               ac-source-php-auto-yasnippets
   ;;                               ac-source-yasnippet))))))
+#+END_SRC
 
+** HTML
+#+BEGIN_SRC emacs-lisp
 (setq html-helper-build-new-buffer t)
+#+END_SRC
 
+** Haskell
+#+BEGIN_SRC emacs-lisp
 (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
 (add-hook 'haskell-cabal-mode-hook '(lambda ()
                                       (setq indent-tabs-mode nil)))
@@ -105,14 +164,22 @@
  '(("-- \\(FIXME\\|TODO\\):" 1 font-lock-warning-face t)
    ;; undefined could be improved with a look ahead a la elisp
    ("[^(-- )][a-zA-Z]* \\(undefined\\)$" 1 font-lock-warning-face t)))
+#+END_SRC
 
+** Scala
+#+BEGIN_SRC emacs-lisp
 ;;(require 'scala-mode2)
 (add-to-list 'auto-mode-alist '("\\.scala$" . scala-mode))
 (add-hook 'scala-mode-hook '(lambda ()
-                              paredit-mode
-                              (setq indent-tabs-mode nil)))
+			      paredit-mode
+			      (setq indent-tabs-mode nil)))
+#+END_SRC
 
+* Miscellaneous
+;; refheap
+#+BEGIN_SRC emacs-lisp
 (setq refheap-user "tmciver")
 (setq refheap-token "3501c201-ad54-4b7f-9f55-c41b83a297a1")
 (put 'downcase-region 'disabled nil)
 (custom-set-variables '(markdown-command "pandoc"))
+#+END_SRC
