@@ -13,6 +13,7 @@
 #+BEGIN_SRC emacs-lisp
 (global-auto-revert-mode 1)
 (smartparens-global-mode 1)
+(setq-default truncate-lines t)
 #+END_SRC
 
 Smooth scrolling.
