@@ -73,10 +73,10 @@ Autocomplete
 (require 'yasnippet)
 (yas-reload-all)
 (add-hook 'prog-mode-hook (lambda ()
-                            (linum-mode)
-                            (subword-mode)
-                            (global-flycheck-mode)
-                            (yas-minor-mode)))
+                            (linum-mode t)
+                            (subword-mode t)
+                            (global-flycheck-mode t)
+                            (yas-minor-mode t)))
 #+END_SRC
 
 ** Clojure
