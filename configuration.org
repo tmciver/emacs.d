@@ -188,6 +188,11 @@ Autocomplete
 (add-hook 'typescript-mode-hook #'setup-tide-mode)
 #+END_SRC
 
+** JasmineJS
+#+BEGIN_SRC emacs-lisp
+(add-hook 'jasminejs-mode-hook (lambda () (jasminejs-add-snippets-to-yas-snippet-dirs)))
+#+END_SRC
+
 * Miscellaneous
 ;; refheap
 #+BEGIN_SRC emacs-lisp
