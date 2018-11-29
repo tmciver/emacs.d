@@ -76,7 +76,8 @@ Autocomplete
                             (linum-mode t)
                             (subword-mode t)
                             (global-flycheck-mode t)
-                            (yas-minor-mode t)))
+                            (yas-minor-mode t)
+                            (projectile-mode +1)))
 #+END_SRC
 
 ** Clojure
