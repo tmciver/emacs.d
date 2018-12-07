@@ -22,6 +22,11 @@ Smooth scrolling.
       scroll-conservatively 10000)
 #+END_SRC
 
+Bell
+#+BEGIN_SRC emacs-lisp
+(setq ring-bell-function 'ignore)
+#+END_SRC
+
 Mouse scrolling
 #+BEGIN_SRC emacs-lisp
 (setq mouse-wheel-scroll-amount '(1 ((shift) . 1) ((control) . nil)))
@@ -40,14 +45,14 @@ Autocomplete
 (setq-default column-number-mode t)
 #+END_SRC
 
-;; fill column stuff
+Fill column stuff
 #+BEGIN_SRC emacs-lisp
 (require 'fill-column-indicator)
 (setq-default auto-fill-mode t)
 (setq-default fill-column 80)
 #+END_SRC
 
-;; custom
+Custom
 #+BEGIN_SRC emacs-lisp
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -57,7 +62,7 @@ Autocomplete
  '(js-indent-level 8))
 #+END_SRC
 
-;; org S5
+org S5
 #+BEGIN_SRC emacs-lisp
 ;; (require 'org-export-as-s5)
 #+END_SRC
