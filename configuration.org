@@ -83,6 +83,12 @@ org S5
                             (global-flycheck-mode t)
                             (yas-minor-mode t)
                             (projectile-mode +1)))
+
+;; Language Server Protocol (LSP)
+(require 'lsp)
+(require 'lsp-clients)
+(require 'lsp-ui)
+(add-hook 'lsp-mode-hook 'lsp-ui-mode)
 #+END_SRC
 
 ** Clojure
@@ -127,31 +133,9 @@ org S5
 ** PHP
 #+BEGIN_SRC emacs-lisp
 (add-hook 'php-mode-hook '(lambda ()
-                            (setq c-basic-offset 2)
-                            (c-set-offset 'case-label '+)))
-  ;;   (require 'web-mode)
-  ;;   (require 'yasnippet)
-  ;;   (yas-global-mode 1)
-;; (require 'php-mode)
-  ;;   (require 'php-auto-yasnippets)
-  ;;   (payas/ac-setup)
-  ;;   (define-key php-mode-map (kbd "C-c C-y") 'yas/create-php-snippet)
-  ;;   (add-to-list 'auto-mode-alist '("\\.php$" . web-mode))
-  ;;   (add-hook 'web-mode-hook
-  ;;          '(lambda ()
-  ;;             ;; (smartparens-mode)
-  ;;             ;; (setq web-mode-ac-sources-alist
-  ;;             ;;            '(("php" . (ac-source-yasnippet ac-source-php-auto-yasnippets))
-  ;;             ;;              ("html" . (ac-source-emmet-html-aliases ac-source-emmet-html-snippets))
-  ;;             ;;              ("css" . (ac-source-css-property ac-source-emmet-css-snippets))))
-  ;;             (setq web-mode-ac-sources-alist
-  ;;                   '(("css" . (ac-source-words-in-buffer ac-source-css-property))
-  ;;                     ("html" . (ac-source-words-in-buffer ac-source-abbrev))
-  ;;                     ("php" . (ac-source-words-in-buffer
-  ;;                               ac-source-words-in-same-mode-buffers
-  ;;                               ac-source-dictionary
-  ;;                               ac-source-php-auto-yasnippets
-  ;;                               ac-source-yasnippet))))))
+                           (setq c-basic-offset 2)
+                           (c-set-offset 'case-label '+) ;; used for properly indenting switch statements.
+                           (lsp)))
 #+END_SRC
 
 ** HTML
