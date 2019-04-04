@@ -31,8 +31,11 @@
  ;; If there is more than one, they won't work right.
  '(indent-tabs-mode nil)
  '(js-indent-level 2)
+ '(lsp-clients-python-library-directories
+   (quote
+    ("/usr/" "~/.local/lib/python2.7/site-packages/pyls")))
  '(markdown-command "pandoc")
  '(package-selected-packages
    (quote
-    (treemacs lsp-ui dash lsp-mode jasminejs-mode company tide web-mode dumb-jump counsel angular-mode angular-snippets typescript-mode scala-mode yasnippet-snippets yasnippet helm-ag projectile markdown-mode flycheck php-mode smartparens paredit neotree haskell-mode fill-column-indicator clojure-mode auto-complete)))
+    (company-lsp treemacs lsp-ui dash lsp-mode jasminejs-mode company tide web-mode dumb-jump counsel angular-mode angular-snippets typescript-mode scala-mode yasnippet-snippets yasnippet helm-ag projectile markdown-mode flycheck php-mode smartparens paredit neotree haskell-mode fill-column-indicator clojure-mode auto-complete)))
  '(tool-bar-mode nil))

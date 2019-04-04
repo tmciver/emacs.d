@@ -89,6 +89,7 @@ org S5
 (require 'lsp-clients)
 (require 'lsp-ui)
 (add-hook 'lsp-mode-hook 'lsp-ui-mode)
+(add-hook 'lsp-mode-hook 'lsp-enable-imenu)
 #+END_SRC
 
 ** Clojure
@@ -136,6 +137,14 @@ org S5
                            (setq c-basic-offset 2)
                            (c-set-offset 'case-label '+) ;; used for properly indenting switch statements.
                            (lsp)))
+#+END_SRC
+
+** Python
+#+BEGIN_SRC emacs-lisp
+(add-hook 'python-mode-hook '(lambda ()
+                               ;;(setq c-basic-offset 2)
+                               ;;(c-set-offset 'case-label '+) ;; used for properly indenting switch statements.
+                               (lsp)))
 #+END_SRC
 
 ** HTML
