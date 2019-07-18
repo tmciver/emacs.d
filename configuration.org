@@ -87,8 +87,8 @@ org S5
 ;; Language Server Protocol (LSP)
 (require 'lsp)
 (require 'lsp-clients)
-(require 'lsp-ui)
-(add-hook 'lsp-mode-hook 'lsp-ui-mode)
+;;(require 'lsp-ui)
+;;(add-hook 'lsp-mode-hook 'lsp-ui-mode)
 (add-hook 'lsp-mode-hook 'lsp-enable-imenu)
 #+END_SRC
 
@@ -141,12 +141,19 @@ org S5
 
 ** Python
 #+BEGIN_SRC emacs-lisp
+(require 'lsp-python-ms)
+(setq lsp-python-ms-executable
+      "~/python-language-server/output/bin/Release/linux-x64/publish/Microsoft.Python.LanguageServer")
 (add-hook 'python-mode-hook '(lambda ()
+                               (setq indent-tabs-mode t)
+                               (setq python-indent-offset 4)
+                               (setq tab-width 4)
                                ;;(setq c-basic-offset 2)
                                ;;(c-set-offset 'case-label '+) ;; used for properly indenting switch statements.
-                               (lsp)))
+                               (lsp)
+))
 #+END_SRC
-
+   
 ** HTML
 #+BEGIN_SRC emacs-lisp
 (setq html-helper-build-new-buffer t)
