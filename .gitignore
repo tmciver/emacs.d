@@ -1,6 +1,9 @@
-*
+/*
+/*/
+*~
 
 !.gitignore
 !configuration.org
 !init.el
 !install-all-packages.el
+!/snippets/
