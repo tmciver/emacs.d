@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: firm
+# key: firm
+# group: django
+# --
+firm_id = self.kwargs['firm_id']
+firm = get_object_or_404(ClientFirm, pk=firm_id)
