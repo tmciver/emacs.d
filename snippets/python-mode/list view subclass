@@ -12,6 +12,9 @@ class ${1:}(ListView):
         # get the base implmentation first to get the context
         context = super($1, self).get_context_data(**kwargs)
 
-        # update context here
+        additional_context = {
+            # update context here
+        }
+        context.update(additional_context)
 
         return context
