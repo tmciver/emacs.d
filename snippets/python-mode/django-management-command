@@ -1,0 +1,18 @@
+# -*- mode: snippet -*-
+# name: django management command
+# key: dmc
+# group: django
+# --
+from django.core.management.base import BaseCommand
+from optparse import make_option
+
+class Command(BaseCommand):
+	help = 'A Django Management Command'
+	option_list = BaseCommand.option_list + (
+		make_option('-f', '--file',
+					dest='filename',
+					help='An example command option')
+	)
+
+	def handle(self, *args, **options):
+		pass
