@@ -170,7 +170,9 @@ org S5
 ** Haskell
 #+BEGIN_SRC emacs-lisp
 (use-package haskell-mode
-  :hook ((haskell-mode . turn-on-haskell-indentation)
+  :hook ((haskell-mode . (lambda ()
+                           (turn-on-haskell-indentation)
+                           (interactive-haskell-mode)))
          (haskell-cabal-mode . (lambda ()
                                  (setq indent-tabs-mode nil)))))
 
