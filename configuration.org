@@ -179,6 +179,11 @@ org S5
  '(("-- \\(FIXME\\|TODO\\):" 1 font-lock-warning-face t)
    ;; undefined could be improved with a look ahead a la elisp
    ("[^(-- )][a-zA-Z]* \\(undefined\\)$" 1 font-lock-warning-face t)))
+
+(let ((my-cabal-path (expand-file-name "~/.cabal/bin")))
+  (setenv "PATH" (concat my-cabal-path path-separator (getenv "PATH")))
+  (add-to-list 'exec-path my-cabal-path))
+(custom-set-variables '(haskell-tags-on-save t))
 #+END_SRC
 
 ** Scala
