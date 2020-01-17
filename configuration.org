@@ -1,19 +1,35 @@
 #+TITLE: Emacs Configuration
 
-* package.el initialization
+* use-package initialization
 
 #+BEGIN_SRC emacs-lisp
-  (require 'package)
-  (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
-  (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
-  (package-initialize)
+(require 'package)
+
+(setq package-archives '(("org" . "https://orgmode.org/elpa/")
+                         ("gnu" . "https://elpa.gnu.org/packages/")
+                         ("melpa" . "https://melpa.org/packages/")))
+
+;; initialize built-in package management
+(package-initialize)
+
+;; update packages list if we are on a new install
+(unless package-archive-contents
+  (package-refresh-contents))
+
+(setq my-packages '(use-package use-package-ensure gnu-elpa-keyring-update))
+(dolist (package my-packages)
+  (unless (package-installed-p 'use-package)
+    (package-install 'use-package)))
+
+(require 'use-package-ensure)
+(setq use-package-always-ensure t)
 #+END_SRC
 
 * Global Settings
 #+BEGIN_SRC emacs-lisp
+(use-package smartparens
+  :config (smartparens-global-mode 1))
 (global-auto-revert-mode 1)
-(smartparens-global-mode 1)
-(setq-default truncate-lines t)
 #+END_SRC
 
 Smooth scrolling.
@@ -35,10 +51,8 @@ Mouse scrolling
 
 Autocomplete
 #+BEGIN_SRC emacs-lisp
-(require 'auto-complete)
-(require 'auto-complete-config)
-(global-auto-complete-mode t)
-(ac-config-default)
+(use-package auto-complete
+  :config (global-auto-complete-mode t))
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp
@@ -47,9 +61,9 @@ Autocomplete
 
 Fill column stuff
 #+BEGIN_SRC emacs-lisp
-(require 'fill-column-indicator)
-(setq-default auto-fill-mode t)
-(setq-default fill-column 80)
+(use-package fill-column-indicator
+  :config (setq-default auto-fill-mode t)
+          (setq-default fill-column 80))
 #+END_SRC
 
 Custom
@@ -75,49 +89,43 @@ org S5
 * Language Settings
 ** All Programming Languages
 #+BEGIN_SRC emacs-lisp
-(require 'yasnippet)
-(yas-reload-all)
-(add-hook 'prog-mode-hook (lambda ()
-                            (linum-mode t)
-                            (subword-mode t)
-                            (global-flycheck-mode t)
-                            (yas-minor-mode t)
-                            (projectile-mode +1)))
+(use-package flycheck
+  :init (global-flycheck-mode))
+
+(use-package projectile)
+
+(use-package paredit
+  :hook ((clojure-mode scheme-mode lisp-mode lisp-interaction-mode emacs-lisp-mode) . paredit-mode))
+
+(use-package yasnippet
+  :config (yas-reload-all)
+  :hook (prog-mode . (lambda ()
+                       (linum-mode t)
+                       (subword-mode t)
+                       (global-flycheck-mode t)
+                       (yas-minor-mode t)
+                       (projectile-mode +1))))
 
 ;; Language Server Protocol (LSP)
-(require 'lsp)
-(require 'lsp-clients)
+(use-package lsp-mode
+  :commands lsp
+  :hook (lsp-mode . lsp-enable-imenu))
+;;(require 'lsp-clients)
 ;;(require 'lsp-ui)
 ;;(add-hook 'lsp-mode-hook 'lsp-ui-mode)
-(add-hook 'lsp-mode-hook 'lsp-enable-imenu)
+;;(add-hook 'lsp-mode-hook 'lsp-enable-imenu)
+
+(use-package magit)
 #+END_SRC
 
 ** Clojure
 #+BEGIN_SRC emacs-lisp
-(add-hook 'text-mode-hook 'turn-on-visual-line-mode)
-
-(require 'clojure-mode)
-(add-hook 'clojure-mode-hook
-	  '(lambda ()
-	     (paredit-mode t)
-	     (show-paren-mode t)
-	     (fci-mode 1)
-	     (setq fci-rule-width 1)
-	     (setq fci-rule-color "darkblue")))
-#+END_SRC
-
-** Elisp
-#+BEGIN_SRC emacs-lisp
-(add-hook 'emacs-lisp-mode-hook
-	  (lambda ()
-	    (paredit-mode)))
-#+END_SRC
-
-** NRepl
-#+BEGIN_SRC emacs-lisp
-(add-hook 'nrepl-mode-hook
-	  (lambda ()
-	    (paredit-mode)))
+(use-package clojure-mode
+  :hook (clojure-mode . (lambda ()
+			  (show-paren-mode t)
+			  (fci-mode 1)
+			  (setq fci-rule-width 1)
+			  (setq fci-rule-color "darkblue"))))
 #+END_SRC
 
 ** Binary
@@ -141,17 +149,17 @@ org S5
 
 ** Python
 #+BEGIN_SRC emacs-lisp
-(require 'lsp-python-ms)
+(use-package lsp-python-ms
+  :hook (python-mode . (lambda ()
+                         (require 'lsp-python-ms)
+                         (setq indent-tabs-mode t)
+                         (setq python-indent-offset 4)
+                         (setq tab-width 4)
+                         ;;(setq c-basic-offset 2)
+                         ;;(c-set-offset 'case-label '+) ;; used for properly indenting switch statements.
+                         (lsp))))
 (setq lsp-python-ms-executable
       "~/python-language-server/output/bin/Release/linux-x64/publish/Microsoft.Python.LanguageServer")
-(add-hook 'python-mode-hook '(lambda ()
-                               (setq indent-tabs-mode t)
-                               (setq python-indent-offset 4)
-                               (setq tab-width 4)
-                               ;;(setq c-basic-offset 2)
-                               ;;(c-set-offset 'case-label '+) ;; used for properly indenting switch statements.
-                               (lsp)
-))
 #+END_SRC
    
 ** HTML
@@ -161,9 +169,10 @@ org S5
 
 ** Haskell
 #+BEGIN_SRC emacs-lisp
-(add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
-(add-hook 'haskell-cabal-mode-hook '(lambda ()
-                                      (setq indent-tabs-mode nil)))
+(use-package haskell-mode
+  :hook ((haskell-mode . turn-on-haskell-indentation)
+         (haskell-cabal-mode . (lambda ()
+                                 (setq indent-tabs-mode nil)))))
 
 (font-lock-add-keywords
  'haskell-mode
@@ -177,7 +186,6 @@ org S5
 ;;(require 'scala-mode2)
 (add-to-list 'auto-mode-alist '("\\.scala$" . scala-mode))
 (add-hook 'scala-mode-hook '(lambda ()
-			      paredit-mode
 			      (setq indent-tabs-mode nil)))
 #+END_SRC
 

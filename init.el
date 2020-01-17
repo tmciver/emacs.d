@@ -34,5 +34,5 @@
  '(markdown-command "pandoc")
  '(package-selected-packages
    (quote
-    (dot-mode nginx-mode pony-mode helm-projectile docker-compose-mode dockerfile-mode company-lsp treemacs lsp-ui dash lsp-mode jasminejs-mode company tide web-mode dumb-jump counsel angular-mode angular-snippets typescript-mode scala-mode yasnippet-snippets yasnippet helm-ag projectile markdown-mode flycheck php-mode smartparens paredit neotree haskell-mode fill-column-indicator clojure-mode auto-complete)))
+    (dot-mode nginx-mode pony-mode helm-projectile docker-compose-mode dockerfile-mode company-lsp treemacs lsp-ui dash lsp-mode jasminejs-mode company tide web-mode dumb-jump counsel angular-mode angular-snippets typescript-mode scala-mode yasnippet-snippets yasnippet helm-ag projectile markdown-mode flycheck php-mode paredit neotree haskell-mode fill-column-indicator clojure-mode auto-complete)))
  '(tool-bar-mode nil))
