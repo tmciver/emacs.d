@@ -95,7 +95,7 @@ org S5
 (use-package projectile)
 
 (use-package paredit
-  :hook ((clojure-mode scheme-mode lisp-mode lisp-interaction-mode emacs-lisp-mode) . paredit-mode))
+  :hook ((clojure-mode scheme-mode lisp-mode lisp-interaction-mode emacs-lisp-mode org-mode) . paredit-mode))
 
 (use-package yasnippet
   :config (yas-reload-all)
