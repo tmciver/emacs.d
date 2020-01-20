@@ -121,6 +121,9 @@ org S5
 ;;(add-hook 'lsp-mode-hook 'lsp-enable-imenu)
 
 (use-package magit)
+
+(use-package dockerfile-mode
+  :init (add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode)))
 #+END_SRC
 
 ** Clojure
