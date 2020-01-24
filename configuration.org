@@ -229,6 +229,15 @@ org S5
 #+END_SRC
 
 ** JasmineJS
+** Markdown
+#+BEGIN_SRC emacs-lisp
+(use-package markdown-mode
+  :init (custom-set-variables '(markdown-command "pandoc"))
+  :hook (markdown-mode . (lambda ()
+                           (fci-mode t)
+                           (auto-fill-mode t))))
+#+END_SRC
+
 #+BEGIN_SRC emacs-lisp
 (add-hook 'jasminejs-mode-hook (lambda () (jasminejs-add-snippets-to-yas-snippet-dirs)))
 #+END_SRC
@@ -244,5 +253,4 @@ org S5
 (setq refheap-user "tmciver")
 (setq refheap-token "3501c201-ad54-4b7f-9f55-c41b83a297a1")
 (put 'downcase-region 'disabled nil)
-(custom-set-variables '(markdown-command "pandoc"))
 #+END_SRC
