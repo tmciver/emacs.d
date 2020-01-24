@@ -233,6 +233,11 @@ org S5
 (add-hook 'jasminejs-mode-hook (lambda () (jasminejs-add-snippets-to-yas-snippet-dirs)))
 #+END_SRC
 
+** Graphviz
+#+BEGIN_SRC emacs-lisp
+(use-package graphviz-dot-mode)
+#+END_SRC
+
 * Miscellaneous
 ;; refheap
 #+BEGIN_SRC emacs-lisp
