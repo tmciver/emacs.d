@@ -249,6 +249,11 @@ org S5
 (use-package graphviz-dot-mode)
 #+END_SRC
 
+** YAML
+#+BEGIN_SRC emacs-lisp
+(use-package yaml-mode)
+#+END_SRC
+
 * Miscellaneous
 ;; refheap
 #+BEGIN_SRC emacs-lisp
