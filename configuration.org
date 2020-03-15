@@ -71,6 +71,13 @@ Fill column stuff
           (setq-default fill-column 80))
 #+END_SRC
 
+RevealJS
+#+BEGIN_SRC emacs-lisp
+(use-package ox-reveal
+  :hook (org-mode . (lambda ()
+                      (require 'ox-reveal))))
+#+END_SRC
+
 Custom
 #+BEGIN_SRC emacs-lisp
 (custom-set-variables
