@@ -131,8 +131,6 @@ org S5
 
 (use-package dockerfile-mode
   :init (add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode)))
-
-(use-package yaml-mode)
 #+END_SRC
 
 ** Clojure
