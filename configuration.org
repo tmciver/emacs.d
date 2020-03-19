@@ -73,6 +73,7 @@ Fill column stuff
 
 RevealJS
 #+BEGIN_SRC emacs-lisp
+(use-package htmlize)
 (use-package ox-reveal
   :hook (org-mode . (lambda ()
                       (require 'ox-reveal))))
