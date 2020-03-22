@@ -71,6 +71,12 @@ Fill column stuff
           (setq-default fill-column 80))
 #+END_SRC
 
+Mulitiple Cursors
+#+BEGIN_SRC emacs-lisp
+  ;; (use-package multiple-cursors
+  ;;   :hook prog-mode)
+#+END_SRC
+
 RevealJS
 #+BEGIN_SRC emacs-lisp
 (use-package htmlize)
