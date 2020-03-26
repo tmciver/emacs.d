@@ -171,6 +171,12 @@ org S5
 			)))
 #+END_SRC
 
+** Purescript
+#+BEGIN_SRC emacs-lisp
+(use-package purescript-mode
+  :hook (purescript-mode . turn-on-purescript-indentation))
+#+END_SRC
+
 ** Python
 #+BEGIN_SRC emacs-lisp
 (use-package lsp-python-ms
