@@ -205,7 +205,15 @@ org S5
                            (interactive-haskell-mode)))
          (haskell-cabal-mode . (lambda ()
                                  (setq indent-tabs-mode nil))))
-  :bind ([f8] . haskell-navigate-imports))
+  :bind (([f8] . haskell-navigate-imports)
+         ("C-c C-l" . 'haskell-process-load-or-reload)
+         ("C-c C-z" . 'haskell-interactive-switch)
+         ("C-c C-n C-t" . 'haskell-process-do-type)
+         ("C-c C-n C-i" . 'haskell-process-do-info)
+         ("C-c C-n C-c" . 'haskell-process-cabal-build)
+         ("C-c C-n c" . 'haskell-process-cabal)))
+
+(custom-set-variables '(haskell-process-type 'stack-ghci))
 
 (font-lock-add-keywords
  'haskell-mode
