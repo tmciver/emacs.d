@@ -204,7 +204,8 @@ org S5
                            (turn-on-haskell-indentation)
                            (interactive-haskell-mode)))
          (haskell-cabal-mode . (lambda ()
-                                 (setq indent-tabs-mode nil)))))
+                                 (setq indent-tabs-mode nil))))
+  :bind ([f8] . haskell-navigate-imports))
 
 (font-lock-add-keywords
  'haskell-mode
