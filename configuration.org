@@ -100,6 +100,12 @@ org S5
 ;; (require 'org-export-as-s5)
 #+END_SRC
 
+Ace Jump Mode
+#+BEGIN_SRC emacs-lisp
+(use-package ace-jump-mode
+ :bind ("C-." . ace-jump-mode))
+#+END_SRC
+
 * Theming
 #+BEGIN_SRC emacs-lisp
 (load-theme 'tango-dark t)
