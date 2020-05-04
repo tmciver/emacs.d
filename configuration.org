@@ -221,6 +221,8 @@ Ace Jump Mode
 
 (custom-set-variables '(haskell-process-type 'stack-ghci))
 
+(require 'ghcid)
+
 (font-lock-add-keywords
  'haskell-mode
  '(("-- \\(FIXME\\|TODO\\):" 1 font-lock-warning-face t)
