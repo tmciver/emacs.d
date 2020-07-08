@@ -208,7 +208,8 @@ Ace Jump Mode
 (use-package haskell-mode
   :hook ((haskell-mode . (lambda ()
                            (turn-on-haskell-indentation)
-                           (interactive-haskell-mode)))
+                           (interactive-haskell-mode)
+			   (custom-set-variables '(haskell-tags-on-save t))))
          (haskell-cabal-mode . (lambda ()
                                  (setq indent-tabs-mode nil))))
   :bind (([f8] . haskell-navigate-imports)
@@ -217,7 +218,8 @@ Ace Jump Mode
          ("C-c C-n C-t" . 'haskell-process-do-type)
          ("C-c C-n C-i" . 'haskell-process-do-info)
          ("C-c C-n C-c" . 'haskell-process-cabal-build)
-         ("C-c C-n c" . 'haskell-process-cabal)))
+         ("C-c C-n c" . 'haskell-process-cabal)
+	 ("M-." . 'haskell-mode-jump-to-def-or-tag)))
 
 (custom-set-variables '(haskell-process-type 'stack-ghci))
 
@@ -232,7 +234,7 @@ Ace Jump Mode
 (let ((my-cabal-path (expand-file-name "~/.cabal/bin")))
   (setenv "PATH" (concat my-cabal-path path-separator (getenv "PATH")))
   (add-to-list 'exec-path my-cabal-path))
-(custom-set-variables '(haskell-tags-on-save t))
+
 #+END_SRC
 
 ** Scala
