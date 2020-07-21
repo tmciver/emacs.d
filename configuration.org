@@ -203,6 +203,14 @@ Ace Jump Mode
 (setq html-helper-build-new-buffer t)
 #+END_SRC
 
+** CSS
+#+BEGIN_SRC emacs-lisp
+(add-hook 'css-mode-hook
+  (lambda ()
+    (setq css-indent-offset 2)
+    (setq indent-tabs-mode nil)))
+#+END_SRC
+
 ** Haskell
 #+BEGIN_SRC emacs-lisp
 (use-package haskell-mode
