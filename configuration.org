@@ -79,10 +79,7 @@ Mulitiple Cursors
 
 RevealJS
 #+BEGIN_SRC emacs-lisp
-(use-package htmlize)
-(use-package ox-reveal
-  :hook (org-mode . (lambda ()
-                      (require 'ox-reveal))))
+  (use-package htmlize)
 #+END_SRC
 
 Custom
@@ -97,8 +94,10 @@ Custom
 
 org
 #+BEGIN_SRC emacs-lisp
-(use-package org
-  :hook (require 'org-tempo))
+  (use-package org
+    :config
+    (require 'org-tempo)
+    (require 'ox-reveal))
 #+END_SRC
 
 Ace Jump Mode
