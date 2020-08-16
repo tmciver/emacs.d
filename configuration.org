@@ -95,9 +95,10 @@ Custom
  '(js-indent-level 8))
 #+END_SRC
 
-org S5
+org
 #+BEGIN_SRC emacs-lisp
-;; (require 'org-export-as-s5)
+(use-package org
+  :hook (require 'org-tempo))
 #+END_SRC
 
 Ace Jump Mode
