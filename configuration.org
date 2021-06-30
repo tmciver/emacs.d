@@ -133,12 +133,17 @@ Ace Jump Mode
 
 ;; Language Server Protocol (LSP)
 (use-package lsp-mode
-  :commands lsp
-  :hook (lsp-mode . lsp-enable-imenu))
+  :hook (prog-mode . lsp-mode))
 ;;(require 'lsp-clients)
 ;;(require 'lsp-ui)
 ;;(add-hook 'lsp-mode-hook 'lsp-ui-mode)
 ;;(add-hook 'lsp-mode-hook 'lsp-enable-imenu)
+
+(use-package lsp-ui
+  :hook (prog-mode . lsp-ui-mode)
+  :config
+  (evil-leader/set-key "x m" #'lsp-ui-imenu)
+  (setq lsp-ui-doc-position 'bottom))
 
 (use-package magit)
 
@@ -228,6 +233,15 @@ Ace Jump Mode
          ("C-c C-n C-c" . 'haskell-process-cabal-build)
          ("C-c C-n c" . 'haskell-process-cabal)
 	 ("M-." . 'haskell-mode-jump-to-def-or-tag)))
+
+(use-package lsp-haskell
+  :defer t
+  :init
+  (add-hook 'haskell-mode-hook
+            (lambda ()
+              (lsp)
+              (setq evil-shift-width 2)))
+  (add-hook 'haskell-literate-mode-hook #'lsp))
 
 (custom-set-variables '(haskell-process-type 'stack-ghci))
 
