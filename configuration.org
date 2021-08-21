@@ -109,6 +109,20 @@ Ace Jump Mode
  :bind ("C-." . ace-jump-mode))
 #+END_SRC
 
+Treemacs
+#+begin_src emacs-lisp
+  (use-package treemacs
+    :ensure t
+    :config (progn
+	      (treemacs-git-mode 'simple)
+	      ;;(treemacs-hide-gitignored-files-mode t)
+	      ))
+
+  (use-package treemacs-projectile
+    :after (treemacs projectile)
+    :ensure t)
+#+end_src
+
 * Theming
 #+BEGIN_SRC emacs-lisp
 (load-theme 'tango-dark t)
