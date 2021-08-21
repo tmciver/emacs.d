@@ -3,26 +3,28 @@
 * use-package initialization
 
 #+BEGIN_SRC emacs-lisp
-(require 'package)
+  (require 'package)
 
-(setq package-archives '(("org" . "https://orgmode.org/elpa/")
-                         ("gnu" . "https://elpa.gnu.org/packages/")
-                         ("melpa" . "https://melpa.org/packages/")))
+  (setq package-archives '(("org" . "https://orgmode.org/elpa/")
+			   ("gnu" . "https://elpa.gnu.org/packages/")
+			   ("melpa" . "https://melpa.org/packages/")))
 
-;; initialize built-in package management
-(package-initialize)
+  ;; initialize built-in package management
+  (package-initialize)
 
-;; update packages list if we are on a new install
-(unless package-archive-contents
-  (package-refresh-contents))
+  ;; update packages list if we are on a new install
+  (unless package-archive-contents
+    (package-refresh-contents))
 
-(setq my-packages '(use-package use-package-ensure gnu-elpa-keyring-update))
-(dolist (package my-packages)
-  (unless (package-installed-p 'use-package)
-    (package-install 'use-package)))
+  (require 'use-package)
 
-(require 'use-package-ensure)
-(setq use-package-always-ensure t)
+  (setq my-packages '(use-package use-package-ensure gnu-elpa-keyring-update))
+  (dolist (package my-packages)
+    (unless (package-installed-p 'use-package)
+      (package-install 'use-package)))
+
+  (require 'use-package-ensure)
+  (setq use-package-always-ensure t)
 #+END_SRC
 
 * Global Settings
@@ -97,7 +99,8 @@ org
   (use-package org
     :config
     (require 'org-tempo)
-    (require 'ox-reveal))
+					  ;    (require 'ox-reveal)
+    )
 #+END_SRC
 
 Ace Jump Mode
@@ -114,36 +117,45 @@ Ace Jump Mode
 * Language Settings
 ** All Programming Languages
 #+BEGIN_SRC emacs-lisp
-(use-package flycheck
-  :init (global-flycheck-mode))
+  (use-package flycheck
+    :init (global-flycheck-mode))
 
-(use-package projectile)
+  (use-package projectile)
 
-(use-package paredit
-  :hook ((clojure-mode scheme-mode lisp-mode lisp-interaction-mode emacs-lisp-mode org-mode) . paredit-mode))
+  (use-package paredit
+    :hook ((clojure-mode scheme-mode lisp-mode lisp-interaction-mode emacs-lisp-mode org-mode) . paredit-mode))
 
-(use-package yasnippet
-  :config (yas-reload-all)
-  :hook (prog-mode . (lambda ()
-                       (linum-mode t)
-                       (subword-mode t)
-                       (global-flycheck-mode t)
-                       (yas-minor-mode t)
-                       (projectile-mode +1))))
+  (use-package yasnippet
+    :config (yas-reload-all)
+    :hook (prog-mode . (lambda ()
+                         (linum-mode t)
+                         (subword-mode t)
+                         (global-flycheck-mode t)
+                         (yas-minor-mode t)
+                         (projectile-mode +1))))
 
-;; Language Server Protocol (LSP)
-(use-package lsp-mode
-  :commands lsp
-  :hook (lsp-mode . lsp-enable-imenu))
-;;(require 'lsp-clients)
-;;(require 'lsp-ui)
-;;(add-hook 'lsp-mode-hook 'lsp-ui-mode)
-;;(add-hook 'lsp-mode-hook 'lsp-enable-imenu)
+  ;; Language Server Protocol (LSP)
+  (use-package lsp-mode
+    :init (progn
+           (setq lsp-headerline-breadcrumb-enable nil)
+           (setq lsp-keymap-prefix "s-k"))
+    :hook (prog-mode . lsp-mode)
+    :commands lsp
+    :bind (("M-." . lsp-find-definition)))
+  ;;(require 'lsp-clients)
+  ;;(require 'lsp-ui)
+  ;;(add-hook 'lsp-mode-hook 'lsp-ui-mode)
+  ;;(add-hook 'lsp-mode-hook 'lsp-enable-imenu)
 
-(use-package magit)
+  (use-package lsp-ui
+    :hook (prog-mode . lsp-ui-mode)
+    :config
+    (setq lsp-ui-doc-position 'bottom))
 
-(use-package dockerfile-mode
-  :init (add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode)))
+  (use-package magit)
+
+  (use-package dockerfile-mode
+    :init (add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode)))
 #+END_SRC
 
 ** Clojure
@@ -229,6 +241,18 @@ Ace Jump Mode
          ("C-c C-n c" . 'haskell-process-cabal)
 	 ("M-." . 'haskell-mode-jump-to-def-or-tag)))
 
+(use-package lsp-haskell
+  :defer t
+  :init
+  (add-hook 'haskell-mode-hook
+            (lambda ()
+	      (let ((cabal-path (expand-file-name "~/.cabal/bin"))
+	            (ghcup-path (expand-file-name "~/.ghcup/bin")))
+		(add-to-list 'exec-path cabal-path)
+		(add-to-list 'exec-path ghcup-path))
+		(lsp)))
+  (add-hook 'haskell-literate-mode-hook #'lsp))
+
 (custom-set-variables '(haskell-process-type 'stack-ghci))
 
 (require 'ghcid)
@@ -239,11 +263,16 @@ Ace Jump Mode
    ;; undefined could be improved with a look ahead a la elisp
    ("[^(-- )][a-zA-Z]* \\(undefined\\)$" 1 font-lock-warning-face t)))
 
-(let ((my-cabal-path (expand-file-name "~/.cabal/bin")))
-  (setenv "PATH" (concat my-cabal-path path-separator (getenv "PATH")))
-  (add-to-list 'exec-path my-cabal-path))
-
 #+END_SRC
+
+** Elm
+   #+begin_src emacs-lisp
+     (use-package elm-mode
+       :config
+       (setq indent-tabs-mode nil)
+       (message "config hook executing . . .")
+       (setq elm-tags-on-save t))
+   #+end_src
 
 ** Scala
 #+BEGIN_SRC emacs-lisp
