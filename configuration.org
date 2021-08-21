@@ -123,6 +123,13 @@ Treemacs
     :ensure t)
 #+end_src
 
+Which-key
+#+begin_src emacs-lisp
+  (use-package which-key
+    :ensure t
+    :config (which-key-mode))
+#+end_src
+
 * Theming
 #+BEGIN_SRC emacs-lisp
 (load-theme 'tango-dark t)
