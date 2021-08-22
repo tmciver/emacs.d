@@ -112,21 +112,18 @@ Ace Jump Mode
 Treemacs
 #+begin_src emacs-lisp
   (use-package treemacs
-    :ensure t
     :config (progn
 	      (treemacs-git-mode 'simple)
 	      ;;(treemacs-hide-gitignored-files-mode t)
 	      ))
 
   (use-package treemacs-projectile
-    :after (treemacs projectile)
-    :ensure t)
+    :after (treemacs projectile))
 #+end_src
 
 Which-key
 #+begin_src emacs-lisp
   (use-package which-key
-    :ensure t
     :config (which-key-mode))
 #+end_src
 
