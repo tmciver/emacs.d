@@ -115,7 +115,8 @@ Treemacs
     :config (progn
 	      (treemacs-git-mode 'simple)
 	      ;;(treemacs-hide-gitignored-files-mode t)
-	      ))
+	      )
+    :bind ("M-0" . treemacs-select-window))
 
   (use-package treemacs-projectile
     :after (treemacs projectile))
