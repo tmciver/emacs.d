@@ -279,7 +279,7 @@ Which-key
 
 (custom-set-variables '(haskell-process-type 'stack-ghci))
 
-(require 'ghcid)
+;;(require 'ghcid)
 
 (font-lock-add-keywords
  'haskell-mode
