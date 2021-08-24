@@ -355,9 +355,3 @@ Which-key
 #+END_SRC
 
 * Miscellaneous
-;; refheap
-#+BEGIN_SRC emacs-lisp
-(setq refheap-user "tmciver")
-(setq refheap-token "3501c201-ad54-4b7f-9f55-c41b83a297a1")
-(put 'downcase-region 'disabled nil)
-#+END_SRC
