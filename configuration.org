@@ -355,3 +355,8 @@ Which-key
 #+END_SRC
 
 * Miscellaneous
+** Multiple Cursors
+   #+begin_src emacs-lisp
+     (use-package multiple-cursors
+       :bind ("C->" . mc/mark-next-like-this))
+   #+end_src
