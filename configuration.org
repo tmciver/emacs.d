@@ -122,6 +122,11 @@ Which-key
     :config (which-key-mode))
 #+end_src
 
+** Window Navigation
+   #+begin_src emacs-lisp
+     (windmove-default-keybindings)
+   #+end_src
+
 * Theming
 #+BEGIN_SRC emacs-lisp
 (load-theme 'tango-dark t)
