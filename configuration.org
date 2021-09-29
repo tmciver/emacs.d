@@ -88,13 +88,9 @@ Custom
  '(js-indent-level 8))
 #+END_SRC
 
-org
+Org Mode
 #+BEGIN_SRC emacs-lisp
-  (use-package org
-    :config
-    (require 'org-tempo)
-					  ;    (require 'ox-reveal)
-    )
+  (use-package org)
 #+END_SRC
 
 Ace Jump Mode
