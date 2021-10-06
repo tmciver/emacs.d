@@ -131,47 +131,49 @@ Which-key
 * Language Settings
 ** All Programming Languages
 #+BEGIN_SRC emacs-lisp
-    (use-package flycheck
-      :init (global-flycheck-mode))
+  (use-package flycheck
+    :init (global-flycheck-mode))
 
-    (use-package projectile
-      :config (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
-              (setq projectile-completion-system 'ivy))
+  (use-package projectile
+    :config (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
+            (setq projectile-completion-system 'ivy))
 
-    (use-package paredit
-      :hook ((clojure-mode scheme-mode lisp-mode lisp-interaction-mode emacs-lisp-mode org-mode) . paredit-mode))
+  (use-package paredit
+    :hook ((clojure-mode scheme-mode lisp-mode lisp-interaction-mode emacs-lisp-mode org-mode) . paredit-mode))
 
-    (use-package yasnippet
-      :config (yas-reload-all)
-      :hook (prog-mode . (lambda ()
-                           (linum-mode t)
-                           (subword-mode t)
-                           (global-flycheck-mode t)
-                           (yas-minor-mode t)
-                           (projectile-mode +1))))
+  (use-package yasnippet
+    :config (yas-reload-all)
+    :hook (prog-mode . (lambda ()
+                         (linum-mode t)
+                         (subword-mode t)
+                         (global-flycheck-mode t)
+                         (yas-minor-mode t)
+                         (projectile-mode +1))))
 
-    ;; Language Server Protocol (LSP)
-    (use-package lsp-mode
-      :init (progn
-             (setq lsp-headerline-breadcrumb-enable nil)
-             (setq lsp-keymap-prefix "s-k"))
-      :hook (prog-mode . lsp-mode)
-      :commands lsp
-      :bind (("M-." . lsp-find-definition)))
-    ;;(require 'lsp-clients)
-    ;;(require 'lsp-ui)
-    ;;(add-hook 'lsp-mode-hook 'lsp-ui-mode)
-    ;;(add-hook 'lsp-mode-hook 'lsp-enable-imenu)
+  ;; Language Server Protocol (LSP)
+  (use-package lsp-mode
+    :init (progn
+           (setq lsp-headerline-breadcrumb-enable nil)
+           (setq lsp-keymap-prefix "s-k"))
+    :hook (prog-mode . lsp-mode)
+    :commands lsp
+    :bind (("M-." . lsp-find-definition)))
+  ;;(require 'lsp-clients)
+  ;;(require 'lsp-ui)
+  ;;(add-hook 'lsp-mode-hook 'lsp-ui-mode)
+  ;;(add-hook 'lsp-mode-hook 'lsp-enable-imenu)
 
-    (use-package lsp-ui
-      :hook (prog-mode . lsp-ui-mode)
-      :config
-      (setq lsp-ui-doc-position 'bottom))
+  (use-package lsp-ui
+    :hook (prog-mode . lsp-ui-mode)
+    :config
+    (setq lsp-ui-doc-position 'bottom))
 
-    (use-package magit)
+  (use-package magit)
 
-    (use-package dockerfile-mode
-      :init (add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode)))
+  (use-package dockerfile-mode
+    :init (add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode)))
+
+  (use-package company)
 #+END_SRC
 
 ** Clojure
