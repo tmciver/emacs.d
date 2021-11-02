@@ -56,12 +56,6 @@ Truncating Long Lines
 (set-default 'truncate-lines t)
 #+END_SRC
 
-Autocomplete
-#+BEGIN_SRC emacs-lisp
-(use-package auto-complete
-  :config (global-auto-complete-mode t))
-#+END_SRC
-
 #+BEGIN_SRC emacs-lisp
 (setq-default column-number-mode t)
 #+END_SRC
