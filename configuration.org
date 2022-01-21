@@ -267,7 +267,8 @@ Which-key
 		(add-to-list 'exec-path cabal-path)
 		(add-to-list 'exec-path ghcup-path))
 		(lsp)))
-  (add-hook 'haskell-literate-mode-hook #'lsp))
+  (add-hook 'haskell-literate-mode-hook #'lsp)
+  :custom (lsp-haskell-plugin-import-lens-code-lens-on nil))
 
 (custom-set-variables '(haskell-process-type 'stack-ghci))
 
