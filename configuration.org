@@ -6,8 +6,8 @@
   (require 'package)
 
   (setq package-archives '(("org" . "https://orgmode.org/elpa/")
-			   ("gnu" . "https://elpa.gnu.org/packages/")
-			   ("melpa" . "https://melpa.org/packages/")))
+                           ("gnu" . "https://elpa.gnu.org/packages/")
+                           ("melpa" . "https://melpa.org/packages/")))
 
   ;; initialize built-in package management
   (package-initialize)
@@ -25,6 +25,8 @@
 
   (require 'use-package-ensure)
   (setq use-package-always-ensure t)
+
+  (exec-path-from-shell-initialize)
 #+END_SRC
 
 * Global Settings
@@ -49,6 +51,12 @@ Mouse scrolling
 #+BEGIN_SRC emacs-lisp
 (setq mouse-wheel-scroll-amount '(1 ((shift) . 1) ((control) . nil)))
 (setq mouse-wheel-progressive-speed nil)
+#+END_SRC
+
+Scrolling without moving cursor
+#+BEGIN_SRC emacs-lisp
+(global-set-key "\M-n" "\C-u1\C-v")
+(global-set-key "\M-p" "\C-u1\M-v")
 #+END_SRC
 
 Truncating Long Lines
@@ -129,7 +137,7 @@ Which-key
 
   (use-package projectile
     :config (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
-            (setq projectile-completion-system 'ivy))
+    (setq projectile-completion-system 'ivy))
 
   (use-package paredit
     :hook ((clojure-mode scheme-mode lisp-mode lisp-interaction-mode emacs-lisp-mode org-mode) . paredit-mode))
@@ -146,11 +154,12 @@ Which-key
   ;; Language Server Protocol (LSP)
   (use-package lsp-mode
     :init (progn
-           (setq lsp-headerline-breadcrumb-enable nil)
-           (setq lsp-keymap-prefix "s-k"))
+            (setq lsp-headerline-breadcrumb-enable nil)
+            (setq lsp-keymap-prefix "s-k"))
     :hook (prog-mode . lsp-mode)
     :commands lsp
-    :bind (("M-." . lsp-find-definition)))
+                                          ;;:bind (("M-." . lsp-find-definition))
+    )
   ;;(require 'lsp-clients)
   ;;(require 'lsp-ui)
   ;;(add-hook 'lsp-mode-hook 'lsp-ui-mode)
@@ -241,44 +250,45 @@ Which-key
 
 ** Haskell
 #+BEGIN_SRC emacs-lisp
-(use-package haskell-mode
-  :hook ((haskell-mode . (lambda ()
-                           (turn-on-haskell-indentation)
-                           (interactive-haskell-mode)
-			   (custom-set-variables '(haskell-tags-on-save t))))
-         (haskell-cabal-mode . (lambda ()
-                                 (setq indent-tabs-mode nil))))
-  :bind (([f8] . haskell-navigate-imports)
-         ("C-c C-l" . 'haskell-process-load-or-reload)
-         ("C-c C-z" . 'haskell-interactive-switch)
-         ("C-c C-n C-t" . 'haskell-process-do-type)
-         ("C-c C-n C-i" . 'haskell-process-do-info)
-         ("C-c C-n C-c" . 'haskell-process-cabal-build)
-         ("C-c C-n c" . 'haskell-process-cabal)
-	 ("M-." . 'haskell-mode-jump-to-def-or-tag)))
+  (use-package haskell-mode
+    :hook ((haskell-mode . (lambda ()
+                             (turn-on-haskell-indentation)
+                             (interactive-haskell-mode)
+                             (custom-set-variables '(haskell-tags-on-save t))))
+           (haskell-cabal-mode . (lambda ()
+                                   (setq indent-tabs-mode nil))))
+    :bind (([f8] . haskell-navigate-imports)
+           ("C-c C-l" . 'haskell-process-load-or-reload)
+           ("C-c C-z" . 'haskell-interactive-switch)
+           ("C-c C-n C-t" . 'haskell-process-do-type)
+           ("C-c C-n C-i" . 'haskell-process-do-info)
+           ("C-c C-n C-c" . 'haskell-process-cabal-build)
+           ("C-c C-n c" . 'haskell-process-cabal)
+           ;;("M-." . 'haskell-mode-jump-to-def-or-tag)
+           ))
 
-(use-package lsp-haskell
-  :defer t
-  :init
-  (add-hook 'haskell-mode-hook
-            (lambda ()
-	      (let ((cabal-path (expand-file-name "~/.cabal/bin"))
-	            (ghcup-path (expand-file-name "~/.ghcup/bin")))
-		(add-to-list 'exec-path cabal-path)
-		(add-to-list 'exec-path ghcup-path))
-		(lsp)))
-  (add-hook 'haskell-literate-mode-hook #'lsp)
-  :custom (lsp-haskell-plugin-import-lens-code-lens-on nil))
+  (use-package lsp-haskell
+    :defer t
+    :init
+    (add-hook 'haskell-mode-hook
+              (lambda ()
+                (let ((cabal-path (expand-file-name "~/.cabal/bin"))
+                      (ghcup-path (expand-file-name "~/.ghcup/bin")))
+                  (add-to-list 'exec-path cabal-path)
+                  (add-to-list 'exec-path ghcup-path))
+                  (lsp)))
+    (add-hook 'haskell-literate-mode-hook #'lsp)
+    :custom (lsp-haskell-plugin-import-lens-code-lens-on nil))
 
-(custom-set-variables '(haskell-process-type 'stack-ghci))
+  (custom-set-variables '(haskell-process-type 'stack-ghci))
 
-;;(require 'ghcid)
+  ;;(require 'ghcid)
 
-(font-lock-add-keywords
- 'haskell-mode
- '(("-- \\(FIXME\\|TODO\\):" 1 font-lock-warning-face t)
-   ;; undefined could be improved with a look ahead a la elisp
-   ("[^(-- )][a-zA-Z]* \\(undefined\\)$" 1 font-lock-warning-face t)))
+  (font-lock-add-keywords
+   'haskell-mode
+   '(("-- \\(FIXME\\|TODO\\):" 1 font-lock-warning-face t)
+     ;; undefined could be improved with a look ahead a la elisp
+     ("[^(-- )][a-zA-Z]* \\(undefined\\)$" 1 font-lock-warning-face t)))
 
 #+END_SRC
 
@@ -287,8 +297,10 @@ Which-key
      (use-package elm-mode
        :config
        (setq indent-tabs-mode nil)
-       (message "config hook executing . . .")
-       (setq elm-tags-on-save t))
+       (setq lsp-elm-elm-language-server-path "/home/tim/.nvm/versions/node/v16.4.0/bin/elm-language-server")
+                                             ;;(setq elm-tags-on-save t)
+       :hook (elm-mode . lsp)
+       )
    #+end_src
 
 ** Scala
