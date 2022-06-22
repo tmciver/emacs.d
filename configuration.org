@@ -132,9 +132,6 @@ Which-key
 * Language Settings
 ** All Programming Languages
 #+BEGIN_SRC emacs-lisp
-  (use-package flycheck
-    :init (global-flycheck-mode))
-
   (use-package projectile
     :config (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
     (setq projectile-completion-system 'ivy))
@@ -147,7 +144,6 @@ Which-key
     :hook (prog-mode . (lambda ()
                          (linum-mode t)
                          (subword-mode t)
-                         (global-flycheck-mode t)
                          (yas-minor-mode t)
                          (projectile-mode +1))))
 
