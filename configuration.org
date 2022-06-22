@@ -175,6 +175,12 @@ Which-key
   (use-package company)
 #+END_SRC
 
+** Binary
+#+BEGIN_SRC emacs-lisp
+;; hexl mode for binary files
+(add-to-list 'auto-mode-alist '("\\.bin$" . hexl-mode))
+#+END_SRC
+
 ** Clojure
 #+BEGIN_SRC emacs-lisp
 (use-package clojure-mode
@@ -185,64 +191,28 @@ Which-key
 			  (setq fci-rule-color "darkblue"))))
 #+END_SRC
 
-** Binary
-#+BEGIN_SRC emacs-lisp
-;; hexl mode for binary files
-(add-to-list 'auto-mode-alist '("\\.bin$" . hexl-mode))
-#+END_SRC
-
-** Nix
-   #+begin_src emacs-lisp
-     (use-package nix-mode)
-   #+end_src
-
-** Octave
-#+BEGIN_SRC emacs-lisp
-(add-to-list 'auto-mode-alist '("\\.m$" . octave-mode))
-#+END_SRC
-
-** PHP
-#+BEGIN_SRC emacs-lisp
-(use-package php-mode
-  :hook (php-mode . (lambda ()
-                        (setq c-basic-offset 2)
-			(c-set-offset 'case-label '+) ;; used for properly indenting switch statements.
-			;;(lsp)
-			)))
-#+END_SRC
-
-** Purescript
-#+BEGIN_SRC emacs-lisp
-(use-package purescript-mode
-  :hook (purescript-mode . turn-on-purescript-indentation))
-#+END_SRC
-
-** Python
-#+BEGIN_SRC emacs-lisp
-(use-package lsp-python-ms
-  :hook (python-mode . (lambda ()
-                         (require 'lsp-python-ms)
-                         (setq indent-tabs-mode t)
-                         (setq python-indent-offset 4)
-                         (setq tab-width 4)
-                         ;;(setq c-basic-offset 2)
-                         ;;(c-set-offset 'case-label '+) ;; used for properly indenting switch statements.
-                         (lsp))))
-(setq lsp-python-ms-executable
-      "~/python-language-server/output/bin/Release/linux-x64/publish/Microsoft.Python.LanguageServer")
-#+END_SRC
-   
-** HTML
-#+BEGIN_SRC emacs-lisp
-(setq html-helper-build-new-buffer t)
-#+END_SRC
-
 ** CSS
 #+BEGIN_SRC emacs-lisp
 (add-hook 'css-mode-hook
   (lambda ()
     (setq css-indent-offset 2)
     (setq indent-tabs-mode nil)))
+#+END_SRC
+
+** Elm
+   #+begin_src emacs-lisp
+     (use-package elm-mode
+       :config
+       (setq indent-tabs-mode nil)
+       (setq lsp-elm-elm-language-server-path "/home/tim/.nvm/versions/node/v16.4.0/bin/elm-language-server")
+                                             ;;(setq elm-tags-on-save t)
+       :hook (elm-mode . lsp)
+       )
+   #+end_src
+
+** Graphviz
+#+BEGIN_SRC emacs-lisp
+(use-package graphviz-dot-mode)
 #+END_SRC
 
 ** Haskell
@@ -289,17 +259,66 @@ Which-key
 
 #+END_SRC
 
-** Elm
+** HTML
+#+BEGIN_SRC emacs-lisp
+(setq html-helper-build-new-buffer t)
+#+END_SRC
+
+** JasmineJS
+** Markdown
+#+BEGIN_SRC emacs-lisp
+(use-package markdown-mode
+  :init (custom-set-variables '(markdown-command "pandoc"))
+  :hook (markdown-mode . (lambda ()
+                           (fci-mode t)
+                           (auto-fill-mode t))))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+(add-hook 'jasminejs-mode-hook (lambda () (jasminejs-add-snippets-to-yas-snippet-dirs)))
+#+END_SRC
+
+** Nix
    #+begin_src emacs-lisp
-     (use-package elm-mode
-       :config
-       (setq indent-tabs-mode nil)
-       (setq lsp-elm-elm-language-server-path "/home/tim/.nvm/versions/node/v16.4.0/bin/elm-language-server")
-                                             ;;(setq elm-tags-on-save t)
-       :hook (elm-mode . lsp)
-       )
+     (use-package nix-mode)
    #+end_src
 
+** Octave
+#+BEGIN_SRC emacs-lisp
+(add-to-list 'auto-mode-alist '("\\.m$" . octave-mode))
+#+END_SRC
+
+** PHP
+#+BEGIN_SRC emacs-lisp
+(use-package php-mode
+  :hook (php-mode . (lambda ()
+                        (setq c-basic-offset 2)
+			(c-set-offset 'case-label '+) ;; used for properly indenting switch statements.
+			;;(lsp)
+			)))
+#+END_SRC
+
+** Purescript
+#+BEGIN_SRC emacs-lisp
+(use-package purescript-mode
+  :hook (purescript-mode . turn-on-purescript-indentation))
+#+END_SRC
+
+** Python
+#+BEGIN_SRC emacs-lisp
+(use-package lsp-python-ms
+  :hook (python-mode . (lambda ()
+                         (require 'lsp-python-ms)
+                         (setq indent-tabs-mode t)
+                         (setq python-indent-offset 4)
+                         (setq tab-width 4)
+                         ;;(setq c-basic-offset 2)
+                         ;;(c-set-offset 'case-label '+) ;; used for properly indenting switch statements.
+                         (lsp))))
+(setq lsp-python-ms-executable
+      "~/python-language-server/output/bin/Release/linux-x64/publish/Microsoft.Python.LanguageServer")
+#+END_SRC
+   
 ** Scala
 #+BEGIN_SRC emacs-lisp
 ;;(require 'scala-mode2)
@@ -330,25 +349,6 @@ Which-key
 (setq lsp-clients-typescript-server-args '("--stdio"))
 
 (add-hook 'typescript-mode-hook 'lsp)
-#+END_SRC
-
-** JasmineJS
-** Markdown
-#+BEGIN_SRC emacs-lisp
-(use-package markdown-mode
-  :init (custom-set-variables '(markdown-command "pandoc"))
-  :hook (markdown-mode . (lambda ()
-                           (fci-mode t)
-                           (auto-fill-mode t))))
-#+END_SRC
-
-#+BEGIN_SRC emacs-lisp
-(add-hook 'jasminejs-mode-hook (lambda () (jasminejs-add-snippets-to-yas-snippet-dirs)))
-#+END_SRC
-
-** Graphviz
-#+BEGIN_SRC emacs-lisp
-(use-package graphviz-dot-mode)
 #+END_SRC
 
 ** YAML
