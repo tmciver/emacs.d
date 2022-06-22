@@ -318,7 +318,12 @@ Which-key
 (setq lsp-python-ms-executable
       "~/python-language-server/output/bin/Release/linux-x64/publish/Microsoft.Python.LanguageServer")
 #+END_SRC
-   
+
+#+BEGIN_SRC emacs-lisp
+  (use-package ttl-mode
+    :mode "\\.ttl\\'")
+#+END_SRC
+
 ** Scala
 #+BEGIN_SRC emacs-lisp
 ;;(require 'scala-mode2)
