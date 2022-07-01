@@ -236,6 +236,7 @@ Which-key
 
   (use-package lsp-haskell
     :defer t
+
     :init
     (add-hook 'haskell-mode-hook
               (lambda ()
@@ -245,7 +246,10 @@ Which-key
                   (add-to-list 'exec-path ghcup-path))
                   (lsp)))
     (add-hook 'haskell-literate-mode-hook #'lsp)
-    :custom (lsp-haskell-plugin-import-lens-code-lens-on nil))
+
+    :custom
+    (lsp-haskell-plugin-import-lens-code-lens-on nil)
+    (lsp-haskell-formatting-provider "stylish-haskell"))
 
   (custom-set-variables '(haskell-process-type 'stack-ghci))
 
