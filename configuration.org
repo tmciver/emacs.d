@@ -336,6 +336,11 @@ Which-key
 			      (setq indent-tabs-mode nil)))
 #+END_SRC
 
+** SPARQL
+#+begin_src elisp
+  (use-package sparql-mode
+    :mode "\\.sparql\\'")
+#+end_src
 ** Typescript
 #+BEGIN_SRC emacs-lisp
 ;; (defun setup-tide-mode ()
