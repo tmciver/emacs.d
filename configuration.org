@@ -120,6 +120,17 @@ Which-key
     :config (which-key-mode))
 #+end_src
 
+#+BEGIN_SRC emacs-lisp
+  ;;(setq web-mode-content-types-alist '(("jsx" . "\\.js[x]?\\'")))
+  (add-hook 'web-mode-hook
+        (lambda ()
+          (message "Running new web-mode hook. web-mode-content-type: %s" web-mode-content-type)
+          ;; short circuit js mode and just do everything in jsx-mode
+          (if (equal web-mode-content-type "javascript")
+              (web-mode-set-content-type "jsx")
+            (message "now set to: %s" web-mode-content-type))))
+#+END_SRC
+
 ** Window Navigation
    #+begin_src emacs-lisp
      (windmove-default-keybindings)
@@ -133,49 +144,50 @@ Which-key
 * Language Settings
 ** All Programming Languages
 #+BEGIN_SRC emacs-lisp
-  (use-package projectile
-    :config (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
-            (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
-            (setq projectile-completion-system 'ivy))
+    (use-package projectile
+      :config (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
+              (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+              (setq projectile-completion-system 'ivy))
 
-  (use-package projectile-ripgrep)
+    (use-package projectile-ripgrep)
 
-  (use-package paredit
-    :hook ((clojure-mode scheme-mode lisp-mode lisp-interaction-mode emacs-lisp-mode org-mode) . paredit-mode))
+    (use-package paredit
+      :hook ((clojure-mode scheme-mode lisp-mode lisp-interaction-mode emacs-lisp-mode org-mode) . paredit-mode))
 
-      (use-package yasnippet
-        :config (yas-reload-all)
-        :hook (prog-mode . (lambda ()
-                             (linum-mode t)
-                             (subword-mode t)
-                             (yas-minor-mode t)
-                             (projectile-mode +1))))
+        (use-package yasnippet
+          :config (yas-reload-all)
+          :hook (prog-mode . (lambda ()
+                               (display-line-numbers-mode t)
+                               (subword-mode t)
+                               (yas-minor-mode t)
+                               (projectile-mode +1))))
 
-      ;; Language Server Protocol (LSP)
-      (use-package lsp-mode
-        :init (progn
-                (setq lsp-headerline-breadcrumb-enable nil)
-                (setq lsp-keymap-prefix "s-k"))
-        :hook (prog-mode . lsp-mode)
-        :commands lsp
-                                              ;;:bind (("M-." . lsp-find-definition))
-        )
-      ;;(require 'lsp-clients)
-      ;;(require 'lsp-ui)
-      ;;(add-hook 'lsp-mode-hook 'lsp-ui-mode)
-      ;;(add-hook 'lsp-mode-hook 'lsp-enable-imenu)
+        ;; Language Server Protocol (LSP)
+        (use-package lsp-mode
+          :init (progn
+                  (setq lsp-headerline-breadcrumb-enable nil)
+                  (setq lsp-keymap-prefix "s-k"))
+          :hook (prog-mode . lsp-mode)
+          :commands lsp
+                                                ;;:bind (("M-." . lsp-find-definition))
+          )
+        ;;(require 'lsp-clients)
+          (require 'lsp-ui)
+          (add-hook 'lsp-mode-hook 'lsp-ui-mode)
+          (add-hook 'lsp-mode-hook 'lsp-enable-imenu)
 
-      (use-package lsp-ui
-        :hook (prog-mode . lsp-ui-mode)
-        :config
-        (setq lsp-ui-doc-position 'bottom))
+        (use-package lsp-ui
+          :hook (prog-mode . lsp-ui-mode)
+          ;; :config
+          ;; (setq lsp-ui-doc-position 'bottom)
+          )
 
-      (use-package magit)
+  (use-package magit)
 
-      (use-package dockerfile-mode
-        :init (add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode)))
+        (use-package dockerfile-mode
+          :init (add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode)))
 
-      (use-package company)
+        (use-package company)
 #+END_SRC
 
 ** Binary
@@ -225,7 +237,7 @@ Which-key
                                (turn-on-haskell-indentation)
                                (interactive-haskell-mode)
                                (custom-set-variables '(haskell-tags-on-save t))
-                               (custom-set-variables '(haskell-stylish-on-save t))))
+                               (custom-set-variables '(ormolu-format-on-save t))))
              (haskell-cabal-mode . (lambda ()
                                      (setq indent-tabs-mode nil))))
       :bind (([f8] . haskell-navigate-imports)
@@ -252,7 +264,7 @@ Which-key
       (add-hook 'haskell-literate-mode-hook #'lsp)
 
       :custom
-      (lsp-haskell-plugin-import-lens-code-lens-on nil)
+;;      (lsp-haskell-plugin-import-lens-code-lens-on nil)
       (lsp-haskell-formatting-provider "stylish-haskell"))
 
     (custom-set-variables '(haskell-process-type 'stack-ghci))
