@@ -119,6 +119,12 @@ Which-key
     :config (which-key-mode))
 #+end_src
 
+Direnv
+#+begin_src emacs-lisp
+  (use-package direnv
+    :config (direnv-mode))
+#+end_src
+
 ** Window Navigation
    #+begin_src emacs-lisp
      (windmove-default-keybindings)
@@ -152,7 +158,7 @@ Which-key
   (use-package lsp-mode
     :init (progn
             (setq lsp-headerline-breadcrumb-enable nil)
-            (setq lsp-keymap-prefix "s-k"))
+            (setq lsp-keymap-prefix "C-c l"))
     :hook (prog-mode . lsp-mode)
     :commands lsp
                                           ;;:bind (("M-." . lsp-find-definition))
