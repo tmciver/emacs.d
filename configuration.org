@@ -131,6 +131,14 @@ Which-key
             (message "now set to: %s" web-mode-content-type))))
 #+END_SRC
 
+Search Results: Use Same Buffer
+#+begin_src emacs-lisp
+  (add-to-list 'display-buffer-alist '("*grep" (display-buffer-reuse-window
+                                                display-buffer-same-window)))
+  (add-to-list 'display-buffer-alist '("*ripgrep" (display-buffer-reuse-window
+                                                display-buffer-same-window)))
+#+end_src
+
 ** Window Navigation
    #+begin_src emacs-lisp
      (windmove-default-keybindings)
@@ -144,50 +152,52 @@ Which-key
 * Language Settings
 ** All Programming Languages
 #+BEGIN_SRC emacs-lisp
-    (use-package projectile
-      :config (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
-              (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
-              (setq projectile-completion-system 'ivy))
+  (add-hook 'prog-mode-hook (display-line-numbers-mode))
 
-    (use-package projectile-ripgrep)
+  (use-package projectile
+    :config (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
+    (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+    (setq projectile-completion-system 'ivy))
 
-    (use-package paredit
-      :hook ((clojure-mode scheme-mode lisp-mode lisp-interaction-mode emacs-lisp-mode org-mode) . paredit-mode))
+  (use-package projectile-ripgrep)
 
-        (use-package yasnippet
-          :config (yas-reload-all)
-          :hook (prog-mode . (lambda ()
-                               (display-line-numbers-mode t)
-                               (subword-mode t)
-                               (yas-minor-mode t)
-                               (projectile-mode +1))))
+  (use-package paredit
+    :hook ((clojure-mode scheme-mode lisp-mode lisp-interaction-mode emacs-lisp-mode org-mode) . paredit-mode))
 
-        ;; Language Server Protocol (LSP)
-        (use-package lsp-mode
-          :init (progn
-                  (setq lsp-headerline-breadcrumb-enable nil)
-                  (setq lsp-keymap-prefix "s-k"))
-          :hook (prog-mode . lsp-mode)
-          :commands lsp
-                                                ;;:bind (("M-." . lsp-find-definition))
-          )
-        ;;(require 'lsp-clients)
-          (require 'lsp-ui)
-          (add-hook 'lsp-mode-hook 'lsp-ui-mode)
-          (add-hook 'lsp-mode-hook 'lsp-enable-imenu)
+  (use-package yasnippet
+    :config (yas-reload-all)
+    :hook (prog-mode . (lambda ()
+                         (display-line-numbers-mode t)
+                         (subword-mode t)
+                         (yas-minor-mode t)
+                         (projectile-mode +1))))
 
-        (use-package lsp-ui
-          :hook (prog-mode . lsp-ui-mode)
-          ;; :config
-          ;; (setq lsp-ui-doc-position 'bottom)
-          )
+  ;; Language Server Protocol (LSP)
+  (use-package lsp-mode
+    :init (progn
+            (setq lsp-headerline-breadcrumb-enable nil)
+            (setq lsp-keymap-prefix "s-k"))
+    :hook (prog-mode . lsp-mode)
+    :commands lsp
+    ;;:bind (("M-." . lsp-find-definition))
+    )
+  ;;(require 'lsp-clients)
+  (require 'lsp-ui)
+  (add-hook 'lsp-mode-hook 'lsp-ui-mode)
+  (add-hook 'lsp-mode-hook 'lsp-enable-imenu)
+
+  (use-package lsp-ui
+    :hook (prog-mode . lsp-ui-mode)
+    ;; :config
+    ;; (setq lsp-ui-doc-position 'bottom)
+    )
 
   (use-package magit)
 
-        (use-package dockerfile-mode
-          :init (add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode)))
+  (use-package dockerfile-mode
+    :init (add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode)))
 
-        (use-package company)
+  (use-package company)
 #+END_SRC
 
 ** Binary
