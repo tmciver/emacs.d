@@ -243,7 +243,10 @@ Direnv
            ("C-c C-n C-i" . 'haskell-process-do-info)
            ("C-c C-n C-c" . 'haskell-process-cabal-build)
            ("C-c C-n c" . 'haskell-process-cabal)
-           ("M-." . 'haskell-mode-jump-to-tag)))
+           ("M-." . 'haskell-mode-jump-to-tag))
+    :custom
+    (haskell-stylish-on-save t)
+    (haskell-tags-on-save t))
 
   ;; (use-package lsp-haskell
   ;;   :defer t
