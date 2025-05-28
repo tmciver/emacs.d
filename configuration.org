@@ -184,7 +184,8 @@ Direnv
   (use-package dockerfile-mode
     :init (add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode)))
 
-  (use-package company)
+  (use-package company
+    :hook (prog-mode . company-mode))
 #+END_SRC
 
 ** Binary
