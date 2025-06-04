@@ -233,12 +233,13 @@ Direnv
   (use-package haskell-mode
     :hook ((haskell-mode . (lambda ()
                              (direnv-mode)
-                             ;;(custom-set-variables '(haskell-process-type 'cabal-repl))
-                             ))
+                             (interactive-haskell-mode)
+                             (custom-set-variables '(haskell-process-type 'cabal-repl))))
            (haskell-cabal-mode . (lambda ()
                                    (setq indent-tabs-mode nil))))
     :bind (([f8] . haskell-navigate-imports)
            ("C-c C-l" . 'haskell-process-load-or-reload)
+           ("C-c C-c" . 'haskell-compile)
            ("C-c C-z" . 'haskell-interactive-switch)
            ("C-c C-n C-t" . 'haskell-process-do-type)
            ("C-c C-n C-i" . 'haskell-process-do-info)
@@ -247,7 +248,12 @@ Direnv
            ("M-." . 'haskell-mode-jump-to-tag))
     :custom
     (haskell-stylish-on-save t)
-    (haskell-tags-on-save t))
+    (haskell-tags-on-save t)
+    ;; The following two variables seem to get overridden, perhaps by interactive-haskell-mode
+    ;;(haskell-compile-cabal-build-command "cabal build")
+    ;;(haskell-process-type 'stack-ghci)
+    ;;(haskell-process-log t)
+    )
 
   ;; (use-package lsp-haskell
   ;;   :defer t
