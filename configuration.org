@@ -165,7 +165,10 @@ Search Results: Use Same Buffer
 
         (use-package projectile
           :ensure t
-          :init (setq projectile-project-search-path '("~/workspace/" "~/workspace/haskell"))
+          :init
+          (setq projectile-project-search-path '("~/workspace/" "~/workspace/haskell"))
+          (projectile-mode +1)
+
           :config
           (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
           (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
