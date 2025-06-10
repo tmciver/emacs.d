@@ -77,6 +77,7 @@ Fill column stuff
 
 RevealJS
 #+BEGIN_SRC emacs-lisp
+  (use-package ox-reveal)
   (use-package htmlize)
 #+END_SRC
 
@@ -125,6 +126,26 @@ Direnv
     :config (direnv-mode))
 #+end_src
 
+Web Mode
+#+BEGIN_SRC emacs-lisp
+;;(setq web-mode-content-types-alist '(("jsx" . "\\.js[x]?\\'")))
+  (add-hook 'web-mode-hook
+        (lambda ()
+          (message "Running new web-mode hook. web-mode-content-type: %s" web-mode-content-type)
+          ;; short circuit js mode and just do everything in jsx-mode
+          (if (equal web-mode-content-type "javascript")
+              (web-mode-set-content-type "jsx")
+            (message "now set to: %s" web-mode-content-type))))
+#+END_SRC
+
+Search Results: Use Same Buffer
+#+begin_src emacs-lisp
+  (add-to-list 'display-buffer-alist '("*grep" (display-buffer-reuse-window
+                                                display-buffer-same-window)))
+  (add-to-list 'display-buffer-alist '("*ripgrep" (display-buffer-reuse-window
+                                                display-buffer-same-window)))
+#+end_src
+
 ** Window Navigation
    #+begin_src emacs-lisp
      (windmove-default-keybindings)
@@ -138,20 +159,22 @@ Direnv
 * Language Settings
 ** All Programming Languages
 #+BEGIN_SRC emacs-lisp
-  (add-hook 'prog-mode-hook (lambda ()
-                              (subword-mode 1)
-                              (display-line-numbers-mode)))
+        (add-hook 'prog-mode-hook (lambda ()
+                                    (subword-mode 1)
+                                    (display-line-numbers-mode)))
 
-  (use-package projectile
-    :ensure t
-    :init (setq projectile-project-search-path '("~/workspace/" "~/workspace/haskell"))
-    :config (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
-    ;;(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
-    (global-set-key (kbd "C-c p") 'projectile-command-map)
-    (setq projectile-completion-system 'ivy))
+        (use-package projectile
+          :ensure t
+          :init (setq projectile-project-search-path '("~/workspace/" "~/workspace/haskell"))
+          :config
+          (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
+          (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+          (setq projectile-completion-system 'ivy))
 
-  (use-package paredit
-    :hook ((clojure-mode scheme-mode lisp-mode lisp-interaction-mode emacs-lisp-mode org-mode) . paredit-mode))
+        (use-package projectile-ripgrep)
+
+        (use-package paredit
+          :hook ((clojure-mode scheme-mode lisp-mode lisp-interaction-mode emacs-lisp-mode org-mode) . paredit-mode))
 
   ;; (use-package yasnippet
   ;;   :config (yas-reload-all)
@@ -160,32 +183,33 @@ Direnv
   ;;                        (yas-minor-mode t)
   ;;                        (projectile-mode +1))))
 
-  ;; Language Server Protocol (LSP)
-  (use-package lsp-mode
-    :init (progn
-            (setq lsp-headerline-breadcrumb-enable nil)
-            (setq lsp-keymap-prefix "C-c l"))
-    ;; :hook (prog-mode . lsp-mode)
-    :commands lsp
-    ;;:bind (("M-." . lsp-find-definition))
-    )
-  ;;(require 'lsp-clients)
-  ;;(require 'lsp-ui)
-  ;;(add-hook 'lsp-mode-hook 'lsp-ui-mode)
-  ;;(add-hook 'lsp-mode-hook 'lsp-enable-imenu)
+        ;; Language Server Protocol (LSP)
+        (use-package lsp-mode
+          :init (progn
+                  (setq lsp-headerline-breadcrumb-enable nil)
+                  (setq lsp-keymap-prefix "C-c l"))
+          ;; :hook (prog-mode . lsp-mode)
+          :commands lsp
+          ;;:bind (("M-." . lsp-find-definition))
+          )
+        ;;(require 'lsp-clients)
+        (require 'lsp-ui)
+        (add-hook 'lsp-mode-hook 'lsp-ui-mode)
+        (add-hook 'lsp-mode-hook 'lsp-enable-imenu)
 
-  (use-package lsp-ui
-    :hook (prog-mode . lsp-ui-mode)
-    :config
-    (setq lsp-ui-doc-position 'bottom))
+        (use-package lsp-ui
+          :hook (prog-mode . lsp-ui-mode)
+          ;; :config
+          ;; (setq lsp-ui-doc-position 'bottom)
+          )
 
-  (use-package magit)
+        (use-package magit)
 
-  (use-package dockerfile-mode
-    :init (add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode)))
+        (use-package dockerfile-mode
+          :init (add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode)))
 
-  (use-package company
-    :hook (prog-mode . company-mode))
+        (use-package company
+          :hook (prog-mode . company-mode))
 #+END_SRC
 
 ** Binary
@@ -233,8 +257,7 @@ Direnv
   (use-package haskell-mode
     :hook ((haskell-mode . (lambda ()
                              (direnv-mode)
-                             (interactive-haskell-mode)
-                             (custom-set-variables '(haskell-process-type 'cabal-repl))))
+                             (interactive-haskell-mode)))
            (haskell-cabal-mode . (lambda ()
                                    (setq indent-tabs-mode nil))))
     :bind (([f8] . haskell-navigate-imports)
@@ -249,11 +272,9 @@ Direnv
     :custom
     (haskell-stylish-on-save t)
     (haskell-tags-on-save t)
-    ;; The following two variables seem to get overridden, perhaps by interactive-haskell-mode
-    ;;(haskell-compile-cabal-build-command "cabal build")
-    ;;(haskell-process-type 'stack-ghci)
-    ;;(haskell-process-log t)
-    )
+    (haskell-compile-cabal-build-command "cabal build")
+    (haskell-process-type 'stack-ghci)
+    (haskell-process-log t))
 
   ;; (use-package lsp-haskell
   ;;   :defer t
@@ -266,11 +287,11 @@ Direnv
   ;;   (lsp-haskell-plugin-import-lens-code-lens-on nil)
   ;;   (lsp-haskell-formatting-provider "stylish-haskell"))
 
-  (font-lock-add-keywords
-   'haskell-mode
-   '(("-- \\(FIXME\\|TODO\\):" 1 font-lock-warning-face t)
-     ;; undefined could be improved with a look ahead a la elisp
-     ("[^(-- )][a-zA-Z]* \\(undefined\\)$" 1 font-lock-warning-face t)))
+    (font-lock-add-keywords
+     'haskell-mode
+     '(("-- \\(FIXME\\|TODO\\):" 1 font-lock-warning-face t)
+       ;; undefined could be improved with a look ahead a la elisp
+       ("[^(-- )][a-zA-Z]* \\(undefined\\)$" 1 font-lock-warning-face t)))
 
   ;; (use-package dante
   ;;   :ensure t ; ask use-package to install the package
