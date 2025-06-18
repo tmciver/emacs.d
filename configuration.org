@@ -159,52 +159,60 @@ Search Results: Use Same Buffer
 * Language Settings
 ** All Programming Languages
 #+BEGIN_SRC emacs-lisp
-  (add-hook 'prog-mode-hook (display-line-numbers-mode))
+        (add-hook 'prog-mode-hook (lambda ()
+                                    (subword-mode 1)
+                                    (display-line-numbers-mode)))
 
-  (use-package projectile
-    :config (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
-    (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
-    (setq projectile-completion-system 'ivy))
+        (use-package projectile
+          :ensure t
+          :init
+          (setq projectile-project-search-path '("~/workspace/" "~/workspace/haskell"))
+          (projectile-mode +1)
 
-  (use-package projectile-ripgrep)
+          :config
+          (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
+          (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+          (setq projectile-completion-system 'ivy))
 
-  (use-package paredit
-    :hook ((clojure-mode scheme-mode lisp-mode lisp-interaction-mode emacs-lisp-mode org-mode) . paredit-mode))
+        (use-package projectile-ripgrep)
 
-  (use-package yasnippet
-    :config (yas-reload-all)
-    :hook (prog-mode . (lambda ()
-                         (display-line-numbers-mode t)
-                         (subword-mode t)
-                         (yas-minor-mode t)
-                         (projectile-mode +1))))
+        (use-package paredit
+          :hook ((clojure-mode scheme-mode lisp-mode lisp-interaction-mode emacs-lisp-mode org-mode) . paredit-mode))
 
-  ;; Language Server Protocol (LSP)
-  (use-package lsp-mode
-    :init (progn
-            (setq lsp-headerline-breadcrumb-enable nil)
-            (setq lsp-keymap-prefix "C-c l"))
-    :hook (prog-mode . lsp-mode)
-    :commands lsp
-    ;;:bind (("M-." . lsp-find-definition))
-    )
-  ;;(require 'lsp-clients)
-  (require 'lsp-ui)
-  (add-hook 'lsp-mode-hook 'lsp-ui-mode)
-  (add-hook 'lsp-mode-hook 'lsp-enable-imenu)
+  ;; (use-package yasnippet
+  ;;   :config (yas-reload-all)
+  ;;   :hook (prog-mode . (lambda ()
+  ;;                        (subword-mode t)
+  ;;                        (yas-minor-mode t)
+  ;;                        (projectile-mode +1))))
 
-  (use-package lsp-ui
-    :hook (prog-mode . lsp-ui-mode)
-    ;; :config
-    ;; (setq lsp-ui-doc-position 'bottom)
-    )
+        ;; Language Server Protocol (LSP)
+        (use-package lsp-mode
+          :init (progn
+                  (setq lsp-headerline-breadcrumb-enable nil)
+                  (setq lsp-keymap-prefix "C-c l"))
+          ;; :hook (prog-mode . lsp-mode)
+          :commands lsp
+          ;;:bind (("M-." . lsp-find-definition))
+          )
+        ;;(require 'lsp-clients)
+        (require 'lsp-ui)
+        (add-hook 'lsp-mode-hook 'lsp-ui-mode)
+        (add-hook 'lsp-mode-hook 'lsp-enable-imenu)
 
-  (use-package magit)
+        (use-package lsp-ui
+          :hook (prog-mode . lsp-ui-mode)
+          ;; :config
+          ;; (setq lsp-ui-doc-position 'bottom)
+          )
 
-  (use-package dockerfile-mode
-    :init (add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode)))
+        (use-package magit)
 
-  (use-package company)
+        (use-package dockerfile-mode
+          :init (add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode)))
+
+        (use-package company
+          :hook (prog-mode . company-mode))
 #+END_SRC
 
 ** Binary
@@ -250,49 +258,54 @@ Search Results: Use Same Buffer
 ** Haskell
 #+BEGIN_SRC emacs-lisp
     (use-package haskell-mode
-      :hook ((haskell-mode . (lambda ()
-                               (turn-on-haskell-indentation)
-                               (interactive-haskell-mode)
-                               (custom-set-variables '(haskell-tags-on-save t))
-                               (custom-set-variables '(ormolu-format-on-save t))))
-             (haskell-cabal-mode . (lambda ()
-                                     (setq indent-tabs-mode nil))))
-      :bind (([f8] . haskell-navigate-imports)
-             ("C-c C-l" . 'haskell-process-load-or-reload)
-             ("C-c C-z" . 'haskell-interactive-switch)
-             ("C-c C-n C-t" . 'haskell-process-do-type)
-             ("C-c C-n C-i" . 'haskell-process-do-info)
-             ("C-c C-n C-c" . 'haskell-process-cabal-build)
-             ("C-c C-n c" . 'haskell-process-cabal)
-             ;;("M-." . 'haskell-mode-jump-to-def-or-tag)
-             ))
-
-    (use-package lsp-haskell
-      :defer t
-
-      :init
-      (add-hook 'haskell-mode-hook
-                (lambda ()
-                  (let ((cabal-path (expand-file-name "~/.cabal/bin"))
-                        (ghcup-path (expand-file-name "~/.ghcup/bin")))
-                    (add-to-list 'exec-path cabal-path)
-                    (add-to-list 'exec-path ghcup-path))
-                    (lsp)))
-      (add-hook 'haskell-literate-mode-hook #'lsp)
-
+      :hook ((haskell-mode . direnv-mode)
+             (haskell-mode . interactive-haskell-mode))
+       :bind (([f8] . haskell-navigate-imports)
+              ("C-c C-l" . 'haskell-process-load-or-reload)
+              ("C-c C-c" . 'haskell-compile)
+              ("C-c C-z" . 'haskell-interactive-switch)
+              ("C-c C-n C-t" . 'haskell-process-do-type)
+              ("C-c C-n C-i" . 'haskell-process-do-info)
+              ("C-c C-n C-c" . 'haskell-process-cabal-build)
+              ("C-c C-n c" . 'haskell-process-cabal)
+              ("M-." . 'haskell-mode-jump-to-def-or-tag))
       :custom
-;;      (lsp-haskell-plugin-import-lens-code-lens-on nil)
-      (lsp-haskell-formatting-provider "stylish-haskell"))
+      (haskell-tags-on-save t)
+      (haskell-stylish-on-save t))
 
-    (custom-set-variables '(haskell-process-type 'stack-ghci))
+    ;; (use-package lsp-haskell
+    ;;   :defer t
 
-    ;;(require 'ghcid)
+    ;;   :init
+    ;;   (add-hook 'haskell-mode-hook 'lsp-deferred)
+    ;;   (add-hook 'haskell-literate-mode-hook #'lsp)
+
+    ;;   :custom
+    ;;   (lsp-haskell-plugin-import-lens-code-lens-on nil)
+    ;;   (lsp-haskell-formatting-provider "stylish-haskell"))
 
     (font-lock-add-keywords
      'haskell-mode
      '(("-- \\(FIXME\\|TODO\\):" 1 font-lock-warning-face t)
        ;; undefined could be improved with a look ahead a la elisp
        ("[^(-- )][a-zA-Z]* \\(undefined\\)$" 1 font-lock-warning-face t)))
+
+    ;; (use-package dante
+    ;;   :ensure t ; ask use-package to install the package
+    ;;   :after haskell-mode
+    ;;   :commands 'dante-mode
+    ;;   :init
+    ;;   (add-hook 'haskell-mode-hook 'flymake-mode)
+    ;;   (remove-hook 'flymake-diagnostic-functions 'flymake-proc-legacy-flymake)
+    ;;   (add-hook 'haskell-mode-hook 'dante-mode)
+    ;;   (add-hook 'haskell-mode-hook
+    ;;             (defun my-fix-hs-eldoc ()
+    ;;               (setq eldoc-documentation-strategy #'eldoc-documentation-default)))
+    ;;   :config
+    ;;   (require 'flymake-flycheck)
+    ;;   (defalias 'flymake-hlint
+    ;;     (flymake-flycheck-diagnostic-function-for 'haskell-hlint))
+    ;;   (add-to-list 'flymake-diagnostic-functions 'flymake-hlint))
 
 #+END_SRC
 
@@ -302,6 +315,12 @@ Search Results: Use Same Buffer
 #+END_SRC
 
 ** JasmineJS
+** Java
+#+BEGIN_SRC emacs-lisp
+  (use-package lsp-java
+    ;; :hook (java-mode . lsp)
+    :config (add-hook 'java-mode-hook 'lsp))
+#+END_SRC
 ** Markdown
 #+BEGIN_SRC emacs-lisp
 (use-package markdown-mode
@@ -337,8 +356,8 @@ Search Results: Use Same Buffer
 
 ** Purescript
 #+BEGIN_SRC emacs-lisp
-(use-package purescript-mode
-  :hook (purescript-mode . turn-on-purescript-indentation))
+  (use-package purescript-mode
+    :hook (purescript-mode . turn-on-purescript-indent))
 #+END_SRC
 
 ** Python

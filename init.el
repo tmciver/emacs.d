@@ -15,5 +15,11 @@
  '(js-indent-level 2)
  '(markdown-command "pandoc")
  '(package-selected-packages
-   '(direnv projectile-ripgrep ripgrep sparql-mode ttl-mode exec-path-from-shell tree-sitter tree-sitter-indent tree-sitter-langs ivy lsp-haskell lsp-treemacs dot-mode nginx-mode pony-mode helm-projectile docker-compose-mode dockerfile-mode company-lsp treemacs lsp-ui dash lsp-mode jasminejs-mode company tide web-mode dumb-jump counsel angular-mode angular-snippets typescript-mode scala-mode yasnippet-snippets yasnippet helm-ag projectile markdown-mode php-mode paredit neotree haskell-mode fill-column-indicator clojure-mode auto-complete))
+   '(ace-jump-mode auto-complete clojure-mode dante direnv dockerfile-mode elm-mode
+                   exec-path-from-shell fill-column-indicator git-commit
+                   graphviz-dot-mode haskell-mode htmlize ivy lsp-haskell
+                   lsp-java lsp-python-ms lsp-ui magit multiple-cursors nix-mode
+                   paredit php-mode pkg-info projectile-ripgrep purescript-mode ripgrep smartparens
+                   sparql-mode treemacs-projectile ttl-mode use-package web-mode
+                   which-key yaml-mode yasnippet))
  '(tool-bar-mode nil))
