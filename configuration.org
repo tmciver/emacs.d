@@ -258,8 +258,7 @@ Search Results: Use Same Buffer
 ** Haskell
 #+BEGIN_SRC emacs-lisp
     (use-package haskell-mode
-      :hook ((haskell-mode . direnv-mode)
-             (haskell-mode . interactive-haskell-mode))
+    :hook ((haskell-mode . direnv-mode))
        :bind (([f8] . haskell-navigate-imports)
               ("C-c C-l" . 'haskell-process-load-or-reload)
               ("C-c C-c" . 'haskell-compile)
@@ -268,7 +267,7 @@ Search Results: Use Same Buffer
               ("C-c C-n C-i" . 'haskell-process-do-info)
               ("C-c C-n C-c" . 'haskell-process-cabal-build)
               ("C-c C-n c" . 'haskell-process-cabal)
-              ("M-." . 'haskell-mode-jump-to-def-or-tag))
+            ("M-." . 'xref-find-definitions))
       :custom
       (haskell-tags-on-save t)
       (haskell-stylish-on-save t))
@@ -290,22 +289,24 @@ Search Results: Use Same Buffer
        ;; undefined could be improved with a look ahead a la elisp
        ("[^(-- )][a-zA-Z]* \\(undefined\\)$" 1 font-lock-warning-face t)))
 
-    ;; (use-package dante
-    ;;   :ensure t ; ask use-package to install the package
-    ;;   :after haskell-mode
-    ;;   :commands 'dante-mode
-    ;;   :init
-    ;;   (add-hook 'haskell-mode-hook 'flymake-mode)
-    ;;   (remove-hook 'flymake-diagnostic-functions 'flymake-proc-legacy-flymake)
-    ;;   (add-hook 'haskell-mode-hook 'dante-mode)
-    ;;   (add-hook 'haskell-mode-hook
-    ;;             (defun my-fix-hs-eldoc ()
-    ;;               (setq eldoc-documentation-strategy #'eldoc-documentation-default)))
-    ;;   :config
-    ;;   (require 'flymake-flycheck)
-    ;;   (defalias 'flymake-hlint
-    ;;     (flymake-flycheck-diagnostic-function-for 'haskell-hlint))
-    ;;   (add-to-list 'flymake-diagnostic-functions 'flymake-hlint))
+  (use-package flymake-flycheck)
+
+  (use-package dante
+    :ensure t
+    :after haskell-mode
+    :commands 'dante-mode
+    :init
+    (add-hook 'haskell-mode-hook 'flymake-mode)
+    (remove-hook 'flymake-diagnostic-functions 'flymake-proc-legacy-flymake)
+    (add-hook 'haskell-mode-hook 'dante-mode)
+    (add-hook 'haskell-mode-hook
+              (defun my-fix-hs-eldoc ()
+                (setq eldoc-documentation-strategy #'eldoc-documentation-default)))
+    :config
+    (require 'flymake-flycheck)
+    (defalias 'flymake-hlint
+      (flymake-flycheck-diagnostic-function-for 'haskell-hlint))
+    (add-to-list 'flymake-diagnostic-functions 'flymake-hlint))
 
 #+END_SRC
 
